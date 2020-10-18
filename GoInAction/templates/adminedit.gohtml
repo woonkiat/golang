@@ -1,0 +1,74 @@
+{{template "header" .}}
+
+<h1>Welcome to the online dental appointment portal.</h1>
+
+<h2>Hi Admin, select an appointment you wish to modify:</h2>
+
+<form method="POST">
+
+<table>
+  <tr>
+    <th></th>
+    <th>User</th>
+    <th>Date</th>
+    <th>Doctor</th>
+    <th>Slot</th>
+  </tr>
+  {{range $index, $element := .UserMap}}
+  <tr>
+    <td><input type="radio" name="user" value={{$index}}></td>
+    <td>{{ $index }}</td>
+    <td>{{ $element.Date }}</td>
+    <td>{{ $element.Doctor }}</td>
+    <td>{{ $element.Slot }}</td>
+  </tr>
+  {{end}}
+</table>
+<h2>Select a new timeslot for the selected user:</h2>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Doctor</th>
+    {{range $index, $element := .SlotMap}}
+    <th>{{ $element }}</th>
+    {{end}}
+  </tr>
+  <tr>
+    <th></th>
+    <th></th>
+    {{range $index, $element := .SlotMap}}
+    <th>{{ $index }}</th>
+    {{end}}
+  </tr>
+
+
+{{range $date := .DateList}}
+{{range $doctor := $.DoctorList}}
+  <tr>
+  <td>{{ $date }} </td>
+  <td>{{ $doctor }}</td>
+
+  {{range $i, $e := index $.AvailabilityMap $doctor $date}}
+  <td align="center">
+  {{ if eq $e true }} 
+  <input type="radio" name="booking" value={{$doctor}}|{{$date}}|{{$i}}>
+  {{end}}
+  </td>
+  
+  {{ end }}
+  </tr>
+{{ end }}
+<tr></tr><tr></tr><tr></tr><tr></tr>
+{{ end }}
+</table>
+
+
+<input type="radio" name="booking" value="remove"> Remove appointment
+<br/>
+<br/>
+<input type="submit" />
+</form>
+
+<br />
+{{template "footer"}}

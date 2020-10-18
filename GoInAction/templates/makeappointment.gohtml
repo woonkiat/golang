@@ -1,0 +1,49 @@
+{{template "header" .}}
+
+<h1>Welcome to the online dental appointment portal.</h1>
+{{if eq .User.HasBooking true}}
+<h2>You have an appointment with {{.Timeslot.Doctor}} on {{.Timeslot.Date}} slot {{.Timeslot.Slot}}.</h2>
+<h2>Select a new timeslot you wish to change to:</h2>
+{{end}}
+
+<form method="POST">
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Doctor</th>
+    {{range $index, $element := .SlotMap}}
+    <th>{{ $element }}</th>
+    {{end}}
+  </tr>
+  <tr>
+    <th></th>
+    <th></th>
+    {{range $index, $element := .SlotMap}}
+    <th>{{ $index }}</th>
+    {{end}}
+  </tr>
+
+
+{{range $date := .DateList}}
+{{range $doctor := $.DoctorList}}
+  <tr>
+  <td>{{ $date }} </td>
+  <td>{{ $doctor }}</td>
+
+  {{range $i, $e := index $.AvailabilityMap $doctor $date}}
+  <td align="center">
+  {{ if eq $e true }} 
+  <input type="radio" name="booking" value={{$doctor}}|{{$date}}|{{$i}}>
+  {{end}}
+  </td>
+  
+  {{ end }}
+  </tr>
+{{ end }}
+<tr></tr><tr></tr><tr></tr><tr></tr>
+{{ end }}
+</table>
+<input type="submit" />
+</form>
+<br />
+{{template "footer"}}

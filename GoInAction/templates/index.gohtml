@@ -1,0 +1,31 @@
+{{template "header" .}}
+
+<h1>Welcome to the online dental appointment portal.</h1>
+
+{{ if eq .User.Name "admin"}}
+<h2>Welcome {{.User.Name}}</h2>
+<h2><a href="/adminedit">View and edit appointments</a></h2>
+<h2><a href="/logout">Log Out</a></h2>
+
+{{ else if .User.Name}}
+<h2>Welcome {{.User.Name}}</h2>
+{{if eq .User.HasBooking true}}
+<h2>You have an appointment with {{.Timeslot.Doctor}} on {{.Timeslot.Date}} slot {{.Timeslot.Slot}}.</h2>
+<h2><a href="/makeappointment">Modify Appointment</a></h2>
+{{else}}
+<h2>You do not have any appointment yet.</h2>
+<h2><a href="/makeappointment">Make Appointment</a></h2>
+{{ end }}
+
+<h2><a href="/logout">Log Out</a></h2>
+
+{{else}}
+<h1>
+  You are currently either not logged in or need to sign up for an account
+</h1>
+<h2><a href="/signup">Sign Up</a></h2>
+<h2><a href="/login">Log in</a></h2>
+{{ end }}
+<h2></h2>
+
+{{template "footer"}}
